@@ -1,0 +1,31 @@
+{% extends "admin_base.njk" %}
+
+{% block titulo %}Admin | Formulario {% endblock %}
+
+{% block contenido %}
+    {% if producto %}
+        <h1>Editar producto</h1>
+    {% else %}
+        <h1>Añadir producto</h1>
+    {% endif %}
+
+    <form action={% if producto %} "/admin/{{producto.id}}" {% else %} "/admin/" {% endif %} method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" class="form-control" placeholder="Nombre" {% if producto %} value="{{ producto.nombre }}" {% endif %} name="nombre">
+        </div>
+        <div class="form-group">
+            <label for="precio">Precio</label>
+            <input type="text" class="form-control" placeholder="Precio" {% if producto %} value="{{ producto.precio }}" {% endif %} name="precio">
+        </div>
+        <div class="form-group">
+            <label for="descripcion">Descripción</label>
+            <input type="text" class="form-control" placeholder="Descripción" {% if producto %} value="{{ producto.descripcion }}" {% endif %} name="descripcion">
+        </div>
+        <div class="form-group">
+            <label for="imagen">Imagen</label>
+            <input type="file" class="form-control" value="" name="imagen">
+        </div>
+        <button type="submit" class="btn btn-primary">{% if producto %}Editar{% else %}Añadir{% endif %}</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "publico_base.njk" %}
+
+{% block titulo %}Publico | Producto {% endblock %}
+
+{% block contenido %}
+    <div class="row">
+        <div class="col-3"><img src="/public/uploads/{{producto.imagen}}" width="175"></div>
+        <div class="col-9">
+            <p><strong><h1>{{producto.nombre}}</h1></strong></p>
+            <p>{{producto.precio}}€</p>
+            <p>{{producto.descripcion}}</p>
+        </div>
+    </div>
+    <h1>Comentarios</h1>
+    {% if producto.comentarios.length == 0 %}
+        <p>No hay comentarios...</p>
+    {% else %}
+        {% for comentario in producto.comentarios %}
+            <div class="row border border-secondary mt-1">
+                <div class="col-2"><strong>{{comentario.nickname}}</strong></div>
+                <div class="col-5">{{comentario.comentario}}</div>
+                <div class="col-5">
+                    {% if (session and session.usuario == comentario.nickname) %}
+                        <form style="display:inline" action="/admin/comentarios/{{ producto.id }}/{{comentario.id}}" method="post">
+                            <input type="hidden" name="_method" value="delete" />
+                            <button type="submit" class="btn btn-danger">Borrar</button>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+
+        {% endfor %}
+    {% endif %}
+
+    {% if (session and session.usuario) %}
+       <a class="btn btn-primary" href="/admin/comentarios/nuevo/{{producto.id}}">Comentar</a>
+    {% endif %}
+{% endblock %} 
